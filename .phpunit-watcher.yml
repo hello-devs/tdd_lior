@@ -1,0 +1,13 @@
+hideManual: true
+watch:
+  directories:
+    - src
+    - tests
+  fileMask: '*.php'
+notifications:
+  passingTests: false
+  failingTests: false
+phpunit:
+  binaryPath: vendor/bin/phpunit
+  arguments: '--stop-on-failure  --colors=always'
+  timeout: 180
