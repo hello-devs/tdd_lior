@@ -1,7 +1,7 @@
 <?php
 //require_once __DIR__.'/../vendor/autoload.php';
 use PHPUnit\Framework\TestCase;
-use Tdd\Controller\HelloController;
+use Tweeter\Controller\HelloController;
 
 class IndexTest extends TestCase
 {

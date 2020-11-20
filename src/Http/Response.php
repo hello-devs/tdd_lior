@@ -1,5 +1,5 @@
 <?php
-namespace Tdd\Http;
+namespace Tweeter\Http;
 
 class Response{
     protected string $content = '';

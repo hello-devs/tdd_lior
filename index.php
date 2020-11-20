@@ -1,6 +1,6 @@
 <?php
 
-use Tdd\Controller\HelloController;
+use Tweeter\Controller\HelloController;
 
 require_once __DIR__.'/vendor/autoload.php';
 

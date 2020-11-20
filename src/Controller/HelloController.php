@@ -1,8 +1,8 @@
 <?php
 
-namespace Tdd\Controller;
+namespace Tweeter\Controller;
 
-use Tdd\Http\Response;
+use Tweeter\Http\Response;
 
 class HelloController
 {
