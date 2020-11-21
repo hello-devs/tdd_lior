@@ -18,11 +18,8 @@ class TweetController
 
     public function saveTweet(): Response
     {
-
         $this->tweetModel->save($_POST['author'], $_POST['content']);
 
-        return new Response('', 302, [
-            'Location' => '/'
-        ]);
+        return new Response('', 302, ['Location' => '/']);
     }
 }
