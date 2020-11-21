@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Tweeter\Model\TweetModel;
 
 class TweetControllerTest extends TestCase
 {
@@ -21,7 +22,7 @@ class TweetControllerTest extends TestCase
         $_POST['content'] = 'My first Tweet';
 
         //Controller manage request
-        $controller = new Tweeter\Controller\TweetController();
+        $controller = new Tweeter\Controller\TweetController(new TweetModel($pdo));
         $response = $controller->saveTweet();
 
         //We expect to be redirected to /
@@ -31,9 +32,11 @@ class TweetControllerTest extends TestCase
 
         //We expect tweet to be saved in DB
         $result = $pdo->query('SELECT t.* FROM tweet as t');
-
         $this->assertEquals(1, $result->rowCount());
-        //We expect tweet "author" et "content" match with given parameters
 
+        //We expect tweet "author" et "content" match with given parameters
+        $data = $result->fetch();
+        $this->assertEquals('Dan', $data['author']);
+        $this->assertEquals('My first Tweet', $data['content']);
     }
 }
