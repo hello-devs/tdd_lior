@@ -8,6 +8,13 @@ class TweetControllerTest extends TestCase
     /** @test */
     public function userCanSaveTweet()
     {
+        $pdo = new PDO('mysql:host=localhost;dbname=tdd_lior;charset=utf8', 'root', '', [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]);
+
+        //setup: we want a emty database
+        $pdo->exec('DELETE FROM tweet');
+
         //Have Got POST Request to /tweet.php
         //Have Got parameters "content" and "author"
         $_POST['author'] = 'Dan';
@@ -23,9 +30,6 @@ class TweetControllerTest extends TestCase
         $this->assertEquals('/', $response->getHeaders()['Location']);
 
         //We expect tweet to be saved in DB
-        $pdo = new PDO('mysql:host=localhost;dbname=tdd_lior;charset=utf8', 'root', '', [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
         $result = $pdo->query('SELECT t.* FROM tweet as t');
 
         $this->assertEquals(1, $result->rowCount());
