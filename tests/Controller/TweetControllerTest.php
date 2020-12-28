@@ -55,39 +55,38 @@ class TweetControllerTest extends TestCase
         $this->assertEquals('Dan', $data['author']);
         $this->assertEquals('My first Tweet', $data['content']);
     }
-    
-    public function test_it_cant_save_tweet_without_author()
+
+    /**
+     * @dataProvider missingFieldsProvider
+     */
+    public function test_it_cant_save_tweet_if_fields_are_missing($postData, $errorMessage)
     {
-        //When got content but not author
-        $_POST['content'] = "test tweet";
+        //When got 
+        $_POST = $postData;
         $response = $this->tweetController->saveTweet();
 
         //We expect response status 400
         $this->assertEquals(400, $response->getStatusCode());
         //We expect response content: "Author is missing"
-        $this->assertEquals("author is missing",$response->getContent());
+        $this->assertEquals($errorMessage,$response->getContent());
     }
 
-    public function test_it_cant_save_tweet_without_content()
+    public function missingFieldsProvider(): array
     {
-        //When got content but not content
-        $_POST['author'] = "luc";
-        $response = $this->tweetController->saveTweet();
-
-        //We expect response status 400
-        $this->assertEquals(400, $response->getStatusCode());
-        //We expect response content: "content is missing"
-        $this->assertEquals("content is missing",$response->getContent());
-    }
-
-    public function test_it_cant_save_tweet_with_no_content_and_no_author()
-    {
-        $response = $this->tweetController->saveTweet();
-
-        //We expect response status 400
-        $this->assertEquals(400, $response->getStatusCode());
-        //We expect response content: "content and author are missing"
-        $this->assertEquals("Fields author, content are missing",$response->getContent());
+        return [
+            [
+                ['content' => 'test tweet'],
+                'author is missing'
+            ],
+            [
+                ['author' => 'Dan'],
+                'content is missing'
+            ],
+            [
+                [],
+                'Fields author, content are missing'
+            ]
+        ];
     }
 
 }
