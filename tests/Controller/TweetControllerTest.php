@@ -23,10 +23,12 @@ class TweetControllerTest extends TestCase
         $this->tweetModel = new TweetModel($this->pdo);
         $this->tweetController = new TweetController($this->tweetModel);
 
+        $_POST = [];
+
     }
 
     /** @test */
-    public function userCanSaveTweet()
+    public function user_can_save_tweet()
     {
         //setup: we want a empty database
         $this->pdo->exec('DELETE FROM tweet');
@@ -53,17 +55,39 @@ class TweetControllerTest extends TestCase
         $this->assertEquals('Dan', $data['author']);
         $this->assertEquals('My first Tweet', $data['content']);
     }
-
-    public function it_cant_save_tweet_without_author()
+    
+    public function test_it_cant_save_tweet_without_author()
     {
-        $_POST = [];
-
         //When got content but not author
         $_POST['content'] = "test tweet";
         $response = $this->tweetController->saveTweet();
 
         //We expect response status 400
         $this->assertEquals(400, $response->getStatusCode());
-
+        //We expect response content: "Author is missing"
+        $this->assertEquals("author is missing",$response->getContent());
     }
+
+    public function test_it_cant_save_tweet_without_content()
+    {
+        //When got content but not content
+        $_POST['author'] = "luc";
+        $response = $this->tweetController->saveTweet();
+
+        //We expect response status 400
+        $this->assertEquals(400, $response->getStatusCode());
+        //We expect response content: "content is missing"
+        $this->assertEquals("content is missing",$response->getContent());
+    }
+
+    public function test_it_cant_save_tweet_with_no_content_and_no_author()
+    {
+        $response = $this->tweetController->saveTweet();
+
+        //We expect response status 400
+        $this->assertEquals(400, $response->getStatusCode());
+        //We expect response content: "content and author are missing"
+        $this->assertEquals("Fields author, content are missing",$response->getContent());
+    }
+
 }

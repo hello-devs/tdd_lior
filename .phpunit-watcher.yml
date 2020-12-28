@@ -5,9 +5,9 @@ watch:
     - tests
   fileMask: '*.php'
 notifications:
-  passingTests: true
+  passingTests: false
   failingTests: true
 phpunit:
   binaryPath: vendor/bin/phpunit
-  arguments: '--stop-on-failure  --colors=always'
+  arguments: '--stop-on-failure'
   timeout: 180
