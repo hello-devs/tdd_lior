@@ -4,8 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "691d8df38c573c1632b687b073884e04",
-    "packages": [],
+    "content-hash": "afbed10d6f5752ac3e8cc4fbbec6c0ed",
+    "packages": [
+        {
+            "name": "jajo/jsondb",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/donjajo/php-jsondb.git",
+                "reference": "41c94c34775b4d4f2d0494cc2e387659efe1ee4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/donjajo/php-jsondb/zipball/41c94c34775b4d4f2d0494cc2e387659efe1ee4e",
+                "reference": "41c94c34775b4d4f2d0494cc2e387659efe1ee4e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jajo\\": "src/"
+                },
+                "files": [
+                    "helpers/dataTypes.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jajo",
+                    "email": "me@donjajo.com"
+                }
+            ],
+            "description": "A PHP Class that reads JSON file as a database. Use for sample DBs",
+            "time": "2020-04-17T19:02:24+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "clue/stdio-react",

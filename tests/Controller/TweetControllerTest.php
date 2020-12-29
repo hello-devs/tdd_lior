@@ -14,7 +14,7 @@ class TweetControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->pdo = new PDO('mysql:host=localhost;dbname=live_test;charset=utf8', 'root', 'root', [
+        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd;charset=utf8', 'root', 'pwd', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
 

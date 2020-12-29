@@ -14,7 +14,7 @@ class TweetModel
         $this->pdo = $pdo;
     }
 
-    public function save(string $author, string $content): int
+    public function save(string $author, string $content)
     {
         $query = $this->pdo->prepare('INSERT INTO tweet SET content = :content, author = :author, created_at = NOW()');
 
