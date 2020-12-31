@@ -5,7 +5,7 @@ namespace Twitter\Model;
 use PDO;
 use stdClass;
 
-class TweetModel
+class TweetModel implements TweetModelInterface
 {
     protected PDO $pdo;
 
@@ -27,7 +27,7 @@ class TweetModel
         return $this->pdo->lastInsertId();
     }
 
-    public function delete(int $id)
+    public function delete($id)
     {
         $query = $this->pdo->prepare('DELETE FROM tweet WHERE id = :id');
         $query->execute([
@@ -35,7 +35,7 @@ class TweetModel
         ]);
     }
 
-    public function findById(int $id): ?stdClass
+    public function findById($id): ?stdClass
     {
         $query = $this->pdo->prepare('SELECT t.* FROM tweet t WHERE id = :id');
         $query->execute([

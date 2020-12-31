@@ -1,26 +1,47 @@
 <?php
 
+use Jajo\JSONDB;
 use PHPUnit\Framework\TestCase;
 use Twitter\Controller\TweetController;
 use Twitter\Http\Request;
+use Twitter\Model\JsonTweetModel;
 use Twitter\Model\TweetModel;
+use Twitter\Model\TweetModelInterface;
 use Twitter\Validation\RequestValidator;
 
 class TweetControllerTest extends TestCase
 {
     protected PDO $pdo;
-    protected TweetModel $tweetModel;
+    protected TweetModelInterface $tweetModel;
     protected TweetController $controller;
 
-    protected function setUp(): void
+    protected function setupJsonDb()
     {
-        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd;charset=utf8', 'root', 'pwd', [
+        $jsonDb = new JSONDB(__DIR__ . '/../../data');
+        $jsonDb->delete()->from('tweets.json')->trigger();
+
+        return new JsonTweetModel;
+    }
+
+    protected function setupMysqlDb()
+    {
+        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd_lior;charset=utf8', 'root', '', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
+//        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd;charset=utf8', 'root', 'pwd', [
+//            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+//        ]);
 
         $this->pdo->query("DELETE FROM tweet");
 
-        $this->tweetModel = new TweetModel($this->pdo);
+        return new TweetModel($this->pdo);
+    }
+
+    protected function setUp(): void
+    {
+        $this->tweetModel = $this->setupMysqlDb();
+//        $this->tweetModel = $this->setupJsonDb();
+
 
         $this->controller = new TweetController(
             $this->tweetModel,
@@ -46,17 +67,17 @@ class TweetControllerTest extends TestCase
         $this->assertEquals('/', $response->getHeader('Location'));
 
         // Et je m'attend à trouver un tweet dans la base de données
-        $result = $this->pdo->query('SELECT t.* FROM tweet AS t');
+        $result = $this->tweetModel->findAll();
 
-        $this->assertEquals(1, $result->rowCount());
+        $this->assertCount(1, $result);
         // Et le tweet a le bon author et le bon content
-        $data = $result->fetch();
-        $this->assertEquals('Lior', $data['author']);
-        $this->assertEquals('Mon premier tweet', $data['content']);
+        $data = $result[0];
+        $this->assertEquals('Lior', $data->author);
+        $this->assertEquals('Mon premier tweet', $data->content);
     }
 
-    /** 
-     * @test 
+    /**
+     * @test
      * @dataProvider missingFieldsProvider
      */
     public function it_cant_save_a_tweet_if_fields_are_missing($postData, $errorMessage)
@@ -111,8 +132,9 @@ class TweetControllerTest extends TestCase
         // Et la location dans les entêtes doit être "/"
         $this->assertEquals('/', $response->getHeader('Location'));
         // Et le tweet ne doit plus exister
-        $results = $this->pdo->query("SELECT t.* FROM tweet t WHERE id = $tweetId");
-        $this->assertEquals(0, $results->rowCount());
+//        $results = $this->pdo->query("SELECT t.* FROM tweet t WHERE id = $tweetId");
+        $results = $this->tweetModel->findById($tweetId);
+        $this->assertNull($results);
     }
 
     /** @test */

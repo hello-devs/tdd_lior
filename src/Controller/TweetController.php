@@ -2,10 +2,9 @@
 
 namespace Twitter\Controller;
 
-use PDO;
 use Twitter\Http\Request;
 use Twitter\Http\Response;
-use Twitter\Model\TweetModel;
+use Twitter\Model\TweetModelInterface;
 use Twitter\Validation\RequestValidator;
 
 /**
@@ -28,13 +27,13 @@ use Twitter\Validation\RequestValidator;
 
 class TweetController
 {
-    protected TweetModel $model;
+    protected TweetModelInterface $model;
     protected array $requiredFields = [
         'author', 'content'
     ];
     protected RequestValidator $requestValidator;
 
-    public function __construct(TweetModel $model, RequestValidator $requestValidator)
+    public function __construct(TweetModelInterface $model, RequestValidator $requestValidator)
     {
         $this->model = $model;
         $this->requestValidator = $requestValidator;

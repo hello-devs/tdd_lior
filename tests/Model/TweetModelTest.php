@@ -11,9 +11,13 @@ class TweetModelTest extends TestCase
     protected function setUp(): void
     {
         // Setup : on va vider la base de données 
-        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd;charset=utf8', 'root', 'pwd', [
+        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd_lior;charset=utf8', 'root', '', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
+
+//        $this->pdo = new PDO('mysql:host=localhost;dbname=tdd;charset=utf8', 'root', 'pwd', [
+//            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+//        ]);
 
         $this->pdo->query("DELETE FROM tweet");
         $this->model = new TweetModel($this->pdo);
